@@ -9,7 +9,6 @@ import java.util.Random;
 
 public class ToJob {
 
-
     static final String ENROLL_REQUEST_PATH = "http://47.108.228.186:8899/wav/enroll";
     static final String VERIFY_REQUEST_PATH = "http://47.108.228.186:8899/wav/verify";
     //音频文件路径
