@@ -12,9 +12,9 @@ public class ToJob {
     static final String ENROLL_REQUEST_PATH = "http://47.108.228.186:8899/wav/enroll";
     static final String VERIFY_REQUEST_PATH = "http://47.108.228.186:8899/wav/verify";
     //音频文件路径
-    static final String FILE_PATH = "J:/deskfile-temp/wav";
+    static final String FILE_PATH = "src/main/resources/wav";
     //执行结果输出文件
-    static final String RESULT_TXT = "J:/1.txt";
+    static final String RESULT_TXT = "C:\\1.txt";
 
     public static void main(String[] args) throws Exception {
         //请求注册接口，输出文件路径
@@ -40,16 +40,12 @@ public class ToJob {
         //通过工具类获取 MediaType
         MediaType mediaType = Utils.getMediaType("multipart/form-data");
 
-        Random random = new Random();
-        random.ints(0, 1);
-
-//        File file1 = new File("/C:/Users/Administrator/Desktop/wav/hc_1.wav");
-//        File file2 = new File("/C:/Users/Administrator/Desktop/wav/ht_1.wav");
-//        File file3 = new File("/C:/Users/Administrator/Desktop/wav/long_30s.wav");
-        File file1 = new File("wav/hc_1.wav");
-        File file2 = new File("wav/ht_2.wav");
-        File file3 = new File("wav/long_30s.wav");
-
+        File file1 = new File("/C:/Users/Administrator/Desktop/wav/hc_1.wav");
+        File file2 = new File("/C:/Users/Administrator/Desktop/wav/ht_1.wav");
+        File file3 = new File("/C:/Users/Administrator/Desktop/wav/long_30s.wav");
+//        File file1 = new File("wav/hc_1.wav");
+//        File file2 = new File("wav/ht_2.wav");
+//        File file3 = new File("wav/long_30s.wav");
 
 
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
@@ -65,11 +61,18 @@ public class ToJob {
                 .method("POST", body)
                 .addHeader("Content-Type", mediaType.toString())
                 .build();
-        //发请求
-        Response response = client.newCall(request).execute();
 
+        Response response = null;
         //响应体
-        String responseBody = response.body().string();
+        String responseBody = null;
+        try {
+            //发请求
+            response = client.newCall(request).execute();
+            responseBody = response.body().string();
+        } catch (IOException e) {
+            System.out.println("请求失败："+e.getMessage());
+            return null;
+        }
 
         //写文件到txt中
         resultToFile(responseBody,new File(resultPath),true);
@@ -92,7 +95,8 @@ public class ToJob {
         MediaType mediaType = Utils.getMediaType("multipart/form-data");
 
         //请求文件
-        File file = new File("wav/ht_2.wav");
+//        File file = new File("wav/ht_2.wav");
+        File file = new File("/C:/Users/Administrator/Desktop/wav/ht_1.wav");
 
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("accessToken", "123456")
@@ -105,10 +109,17 @@ public class ToJob {
                 .addHeader("Content-Type", "multipart/form-data")
                 .build();
 
-        Response response = client.newCall(request).execute();
+        Response response = null;
+        String responseBody = null;
 
-        //响应体
-        String responseBody = response.body().string();
+        try {
+            //发请求
+            response = client.newCall(request).execute();
+            //响应体
+            responseBody = response.body().string();
+        } catch (IOException e) {
+            System.out.println("请求失败："+e.getMessage());
+        }
 
         //写文件到txt中
         resultToFile(responseBody,new File(resultPath),true);
